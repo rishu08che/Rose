@@ -1,99 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Rose Day</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rose Day</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Segoe UI", sans-serif;
-    }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
 
-    body {
-      height: 100vh;
-      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #7a0019;
-    }
+body {
+  height: 100vh;
+  background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    .card {
-      background: rgba(255, 255, 255, 0.85);
-      padding: 30px 25px;
-      border-radius: 20px;
-      text-align: center;
-      max-width: 90%;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-      z-index: 2;
-    }
+#game {
+  text-align: center;
+  color: #7a0019;
+}
 
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
-    }
+h1 {
+  margin-bottom: 10px;
+}
 
-    h2 {
-      font-size: 1.4rem;
-      margin-bottom: 15px;
-      color: #b3002d;
-    }
+#score {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
 
-    p {
-      font-size: 1rem;
-      line-height: 1.6;
-    }
+.rose {
+  position: absolute;
+  font-size: 32px;
+  cursor: pointer;
+  animation: fall linear;
+}
 
-    .rose {
-      position: absolute;
-      top: -10%;
-      font-size: 30px;
-      animation: fall linear infinite;
-      opacity: 0.9;
-    }
+@keyframes fall {
+  from { top: -10%; }
+  to { top: 110%; }
+}
 
-    @keyframes fall {
-      0% {
-        transform: translateY(-10vh) rotate(0deg);
-      }
-      100% {
-        transform: translateY(110vh) rotate(360deg);
-      }
-    }
-  </style>
+#final {
+  display: none;
+  background: rgba(255,255,255,0.9);
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 90%;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+</style>
 </head>
+
 <body>
 
-  <div class="card">
-    <h1>🌹 Rose Day 🌹</h1>
-    <h2>Manvi, you are my rose</h2>
-    <p>
-      Not because today says so,<br>
-      but because you bring softness, color,<br>
-      and meaning into my life.<br><br>
-      This rose isn’t temporary.<br>
-      It’s you.
-    </p>
-  </div>
+<div id="game">
+  <h1>🌹 Catch the Roses 🌹</h1>
+  <div id="score">Roses caught: 0 / 5</div>
+</div>
 
-  <script>
-    const roseCount = 20;
+<div id="final">
+  <h1>Manvi 🌹</h1>
+  <p style="margin-top:15px; line-height:1.6;">
+    You caught every rose.<br><br>
+    But the truth is,<br>
+    you were always the rose.<br><br>
+    Happy Rose Day ❤️
+  </p>
+</div>
 
-    for (let i = 0; i < roseCount; i++) {
-      const rose = document.createElement("div");
-      rose.classList.add("rose");
-      rose.innerHTML = "🌹";
-      rose.style.left = Math.random() * 100 + "vw";
-      rose.style.animationDuration = 5 + Math.random() * 5 + "s";
-      rose.style.fontSize = 24 + Math.random() * 20 + "px";
-      document.body.appendChild(rose);
-    }
-  </script>
+<script>
+let score = 0;
+const target = 5;
+
+function createRose() {
+  const rose = document.createElement("div");
+  rose.className = "rose";
+  rose.innerHTML = "🌹";
+  rose.style.left = Math.random() * 90 + "vw";
+  rose.style.animationDuration = 3 + Math.random() * 2 + "s";
+
+  rose.onclick = () => {
+    score++;
+    document.getElementById("score").innerText =
+      `Roses caught: ${score} / ${target}`;
+    rose.remove();
+
+    if (score >= target) endGame();
+  };
+
+  document.body.appendChild(rose);
+
+  setTimeout(() => rose.remove(), 5000);
+}
+
+function endGame() {
+  document.getElementById("game").style.display = "none";
+  document.getElementById("final").style.display = "block";
+}
+
+setInterval(() => {
+  if (score < target) createRose();
+}, 800);
+</script>
 
 </body>
 </html>
